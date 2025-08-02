@@ -7,6 +7,7 @@ Veo 3
 A cinematic, photorealistic 4K animation recreating a viral box explosion effect: an empty sunlit Scandinavian room transforms into a complete nerd gaming setup. All elements emerge dynamically from a single carton in a fixed wide-angle shot.
 
 ## Prompt
+```
 metadata:
   prompt_name: "ACME Nerd Room Assembly"
   base_style: "cinematic, photorealistic, 4K"
@@ -40,3 +41,4 @@ timeline:
     timestamp: "00:06-00:08"
     action: "The final piece—the curved gaming monitor—gracefully lands on the newly formed gaming desk. The room is now perfectly furnished as a nerd sanctuary and serene. All motion ceases."
     audio: "All chaotic sounds stop. A single, soft 'fwoomp' as the monitor lands. The sound of a furnished, quiet room."
+```
