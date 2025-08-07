@@ -1,0 +1,25 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Curated collection of generative AI prompts organized by media type. Ready-to-use templates for video, music, images, and more.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "collect": "node scripts/collect-prompts.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trevonerd/prompthub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/trevonerd/prompthub/issues"
+  },
+  "homepage": "https://github.com/trevonerd/prompthub#readme",
+  "devDependencies": {
+    "glob": "^11.0.3"
+  }
+}
