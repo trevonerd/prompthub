@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const PROMPT_CATEGORIES = ['video', 'music', 'images', 'text', 'game-assets', 'data-viz'];
+const PROMPTS_DIR = 'prompts';
 
 async function collectPrompts() {
   const allPrompts = [];
@@ -18,35 +18,41 @@ async function collectPrompts() {
     return Array.prototype.concat(...files);
   }
 
-  for (const category of PROMPT_CATEGORIES) {
-    // Check if category directory exists
-    try {
-      await fs.access(category);
-    } catch (error) {
-      // If the directory doesn't exist, skip it
-      continue;
+  try {
+    const categoryDirs = await fs.readdir(PROMPTS_DIR, { withFileTypes: true });
+
+    for (const categoryDir of categoryDirs) {
+      if (categoryDir.isDirectory()) {
+        const category = categoryDir.name;
+        const categoryPath = path.join(PROMPTS_DIR, category);
+        const files = await findFiles(categoryPath);
+        const markdownFiles = files.filter(file => file.endsWith('.md'));
+
+        for (const file of markdownFiles) {
+          const content = await fs.readFile(file, 'utf-8');
+          const { title, tool, description, promptDataString } = parsePrompt(content);
+          const id = path.basename(file, '.md');
+
+          allPrompts.push({
+            id,
+            category,
+            title,
+            tool,
+            description,
+            promptDataString,
+            content,
+          });
+        }
+      }
     }
-
-    const files = await findFiles(category);
-    const markdownFiles = files.filter(file => file.endsWith('.md'));
-
-
-    for (const file of markdownFiles) {
-      const content = await fs.readFile(file, 'utf-8');
-      const { title, tool, description, promptDataString } = parsePrompt(content);
-      const id = path.basename(file, '.md');
-
-      allPrompts.push({
-        id,
-        category,
-        title,
-        tool,
-        description,
-        promptDataString,
-        content,
-      });
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      console.log(`Prompts directory not found at '${PROMPTS_DIR}'. Skipping prompt collection.`);
+    } else {
+      throw error;
     }
   }
+
 
   await fs.writeFile('prompthub-ui/public/prompts.json', JSON.stringify(allPrompts, null, 2));
   console.log('✅ Prompts collected successfully!');
